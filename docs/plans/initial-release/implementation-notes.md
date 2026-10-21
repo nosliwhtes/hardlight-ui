@@ -24,6 +24,7 @@ Created: 2026-10-20
 - Test literal user-input rendering, hidden-fragment focus/scroll, mobile navigation order and Back to the initial unfragmented workspace state. A matching URL alone does not prove the selected panel became reachable.
 - Run Hermes Doctor against a clean explicit public staging tree. Passing a development checkout containing private virtual environments caused a bounded timeout; clean staging passed. Doctor copies its input directory, so never hand it private evidence or an entire development environment. Keep HOME and HERMES_HOME isolated before Hermes imports.
 - Keep build tools in a project-private environment. A missing `build` module in the host development interpreter is a tooling failure, not a successful package build; use the isolated build environment and exercise installed-wheel resources outside the source checkout.
+- Verify declared development extras in a fresh private environment, not just a richer host environment. Paint regressions use pytest 9's built-in subtests fixture; requesting pytest 8 produced a clean-install setup failure. The development-only requirement now matches that interface while runtime dependencies remain empty.
 
 ## Evidence and scope
 

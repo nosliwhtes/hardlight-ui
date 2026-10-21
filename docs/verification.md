@@ -4,7 +4,7 @@ These are observed local checks for the initial 0.1.0 source candidate, not a cl
 
 ## Local checks
 
-The final local combined run used Python 3.11.16 and system Chrome 155.0.8059.84:
+The final local combined run used Python 3.11.16, pytest 9.1.1 and system Chrome 155.0.8059.84:
 
 ```sh
 HERMES_SOURCE=/path/to/hermes-agent HARDLIGHT_BROWSER_TESTS=1 \
@@ -14,6 +14,8 @@ python -m build
 ```
 
 Observed results: **133 tests passed, 81 subtests passed, no skips**; Ruff passed; wheel and source distribution built. The installed wheel was exercised from an isolated Python environment outside the checkout, with no third-party runtime dependencies. All sixteen style packets and nine craft references resolved, the CLI returned JSON, and missing optional browser dependencies produced an explicit failure instead of an installation.
+
+A separate fresh environment installed only the declared `.[dev,browser]` extras and passed **132 tests and 81 subtests without skips**; its single native-host test was explicitly deselected and was exercised in the combined run above. The development requirement is pytest 9 because the paint regressions use its built-in subtests fixture; this adds no installed-runtime dependency.
 
 The native test is a fresh subprocess with isolated HOME/HERMES_HOME and the actual Hermes PluginManager/registry. It dispatches all five tools, resolves the bundled skill, invokes the command, renders the discovery section and verifies unload. Native compatibility depends on registration APIs, not merely a version label. CI separately pins a public Hermes revision for its manually requested native job.
 
