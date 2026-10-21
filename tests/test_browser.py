@@ -270,6 +270,64 @@ def test_real_unsupported_text_paint_is_unknown_with_measured_controls(live_brow
     assert json.loads(Path(result["report"]).read_text()) == result
 
 
+def test_real_unsupported_background_paint_is_unknown_with_measured_controls(live_browser, tmp_path, subtests):
+    source = tmp_path / "background-paint.html"
+    source.write_text('''<!doctype html><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Background paint regression</title><style>
+        body{background:black;font:16px sans-serif;margin:8px}
+        p{color:black;background:white;margin:4px 0;padding:4px;line-height:20px}
+        #inset,.ancestor-inset{box-shadow:inset 0 0 0 100px black}
+        #multi{box-shadow:0 0 0 1px white, inset 0 0 0 100px black}
+        #clip,.ancestor-clip{background-clip:text}
+        #webkit-clip,.ancestor-webkit-clip{-webkit-background-clip:text}
+        #content,.ancestor-content{background-clip:content-box}
+        #padding{background-clip:padding-box}
+        #outer{box-shadow:0 0 0 1px white}
+        #low{color:#777;background:#888}
+        </style>
+        <p id="control">Black on white</p><p id="low">Low contrast</p>
+        <p id="outer">Outer shadow control</p>
+        <p id="inset">Inset shadow</p><p id="multi">Multiple shadows</p>
+        <p id="clip">Clipped background</p><p id="webkit-clip">WebKit clip</p>
+        <p id="content">Content clip</p><p id="padding">Padding clip</p>
+        <div class="ancestor-inset"><p id="inherited-inset">Ancestor inset</p></div>
+        <div class="ancestor-clip"><p id="inherited-clip">Ancestor clip</p></div>
+        <div class="ancestor-webkit-clip"><p id="inherited-webkit-clip">Ancestor WebKit clip</p></div>
+        <div class="ancestor-content"><p id="inherited-content">Ancestor content clip</p></div>''', encoding="utf-8")
+    result = live_browser.audit_page(str(source), str(tmp_path / "out"),
+                                     executable=os.environ.get("HARDLIGHT_CHROME"))
+    assert result["ok"] is True, result
+    assert [view["name"] for view in result["captures"]] == ["wide", "narrow", "narrow-reduced-motion"]
+    assert result["cleanup_errors"] == []
+    assert result["request_errors"] == []
+    assert result["page_errors"] == []
+    for view in result["captures"]:
+        assert view["dom"]["horizontal_overflow"]["detected"] is False
+        contrast = {item["id"]: item for item in view["dom"]["contrast"]}
+        for identity in ("control", "outer"):
+            with subtests.test(view=view["name"], identity=identity):
+                assert contrast[identity]["status"] == "pass", contrast[identity]
+                assert contrast[identity]["ratio"] == 21
+        with subtests.test(view=view["name"], identity="low"):
+            assert contrast["low"]["status"] == "fail", contrast["low"]
+            channels = [value / 255 for value in (119, 136)]
+            luminances = [((value + .055) / 1.055) ** 2.4 for value in channels]
+            assert contrast["low"]["ratio"] == pytest.approx(
+                (luminances[1] + .05) / (luminances[0] + .05), abs=1e-14, rel=0)
+        for identity, reason in (("inset", "inset box-shadow"), ("multi", "inset box-shadow"),
+                                 ("inherited-inset", "inset box-shadow"),
+                                 ("clip", "background-clip"), ("webkit-clip", "background-clip"),
+                                 ("content", "background-clip"), ("padding", "background-clip"),
+                                 ("inherited-clip", "background-clip"),
+                                 ("inherited-webkit-clip", "background-clip"),
+                                 ("inherited-content", "background-clip")):
+            with subtests.test(view=view["name"], identity=identity):
+                assert contrast[identity]["status"] == "unknown", contrast[identity]
+                assert reason in contrast[identity]["reason"]
+                assert "ratio" not in contrast[identity]
+    assert json.loads(Path(result["report"]).read_text(encoding="utf-8")) == result
+
+
 @pytest.fixture
 def local_servers():
     from contextlib import ExitStack

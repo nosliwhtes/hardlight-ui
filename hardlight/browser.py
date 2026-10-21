@@ -165,6 +165,10 @@ DOM_SCRIPT = r"""limit => {
         let ancestor=e,depth=0;
         while(ancestor && depth++<32) {
             const s=getComputedStyle(ancestor);
+            if(/\binset\b/.test(s.boxShadow))
+                return {...entry,reason:'inset box-shadow changes background paint; inspect contrast manually'};
+            if(s.backgroundClip!=='border-box' || s.webkitBackgroundClip!=='border-box')
+                return {...entry,reason:'background-clip changes background paint; inspect contrast manually'};
             if(Number(s.opacity)!==1 || s.backgroundImage!=='none' || s.filter!=='none' || s.backdropFilter!=='none' ||
                s.mixBlendMode!=='normal' || s.textShadow!=='none' || s.maskImage!=='none') return entry;
             for(const pseudo of ['::before','::after']) {

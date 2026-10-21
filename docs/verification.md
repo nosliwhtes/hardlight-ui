@@ -13,7 +13,7 @@ python -m ruff check .
 python -m build
 ```
 
-Observed results: **132 tests passed, 42 subtests passed, no skips**; Ruff passed; wheel and source distribution built. The installed wheel was exercised from an isolated Python environment outside the checkout, with no third-party runtime dependencies. All sixteen style packets and nine craft references resolved, the CLI returned JSON, and missing optional browser dependencies produced an explicit failure instead of an installation.
+Observed results: **133 tests passed, 81 subtests passed, no skips**; Ruff passed; wheel and source distribution built. The installed wheel was exercised from an isolated Python environment outside the checkout, with no third-party runtime dependencies. All sixteen style packets and nine craft references resolved, the CLI returned JSON, and missing optional browser dependencies produced an explicit failure instead of an installation.
 
 The native test is a fresh subprocess with isolated HOME/HERMES_HOME and the actual Hermes PluginManager/registry. It dispatches all five tools, resolves the bundled skill, invokes the command, renders the discovery section and verifies unload. Native compatibility depends on registration APIs, not merely a version label. CI separately pins a public Hermes revision for its manually requested native job.
 
@@ -23,7 +23,7 @@ Hermes Doctor against a clean public staging tree loaded five tools and zero hoo
 
 - Initial wide, narrow and reduced-motion captures cover the three authored demos; the gallery is also exercised by viewport tests.
 - Interaction checks cover passage search and recovery, workspace selection/filtering/session edits, literal input rendering, cultural-program filters/disclosures, keyboard focus, direct fragments, browser Back, gallery return paths and meaningful JavaScript-off content.
-- Negative browser checks cover denied targets, direct/chained cross-origin redirects, credential-bearing requests, unsupported contrast paint, missing browsers, setup/navigation failures and fresh-report replacement. A denied sink must receive no request.
+- Negative browser checks cover denied targets, direct/chained cross-origin redirects, credential-bearing requests, unsupported contrast paint, missing browsers, setup/navigation failures and fresh-report replacement. Paint regressions include text-fill/stroke/SVG, inset shadows, multiple shadows and non-default background clipping on elements and ancestors, with ordinary passing/failing text and outer-shadow controls across all three captures. A denied sink must receive no request.
 - A simulated cp1252 default exercises the actual example-source readers. This is regression coverage on Linux; it is not a claim that a Windows browser was run locally.
 - Installed system Chrome is the real local browser path. Playwright Chromium discovery/cleanup has deterministic tests, but its real fallback launch was unavailable locally. The hosted browser job explicitly provisions Chromium and rejects skipped browser checks; inspect that run's evidence separately.
 
