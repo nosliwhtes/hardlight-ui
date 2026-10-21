@@ -153,6 +153,14 @@ DOM_SCRIPT = r"""limit => {
     const contrast = (e, style, rect) => {
         const entry={...describe(e),status:'unknown',reason:'unsupported paint or transparent foreground/background'};
         const foreground=rgb(style.color), background=rgb(style.backgroundColor);
+        // CSS color is evidence of glyph paint only for ordinary unstroked HTML text.
+        if(e.namespaceURI!=='http://www.w3.org/1999/xhtml')
+            return {...entry,reason:'non-HTML text paint (including SVG fill/stroke) requires manual inspection'};
+        const fill=rgb(style.webkitTextFillColor);
+        if(!fill || !foreground || fill.some((channel,i)=>channel!==foreground[i]))
+            return {...entry,reason:'text-fill is transparent, unsupported or differs from CSS color; inspect effective glyph paint'};
+        if(parseFloat(style.webkitTextStrokeWidth)!==0)
+            return {...entry,reason:'text-stroke changes glyph paint; inspect fill and stroke contrast manually'};
         if (!foreground || !background) return entry;
         let ancestor=e,depth=0;
         while(ancestor && depth++<32) {

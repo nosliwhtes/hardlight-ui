@@ -18,6 +18,7 @@ Created: 2026-10-20
 ## Discovered failure classes and verification method
 
 - Chromium may follow an HTTP redirect without another route callback when a request is continued. Fetch with redirect following disabled, inspect `Location`, then fulfill or block. Direct and chained cross-origin tests require zero requests at the denied sink.
+- CSS `color` does not always describe glyph paint. Differing/transparent/unsupported text-fill, nonzero text-stroke and non-HTML/SVG text remain unknown in the browser check. Real Chrome regressions include measured passing and failing ordinary-text controls, so disabling contrast cannot satisfy the tests.
 - Canonical evidence must not retain an earlier success after setup fails. Exercise invalid targets, missing browser and navigation failures against an existing recognized report, as well as a successful control. Atomic report writes and cleanup are part of the result contract.
 - Test literal user-input rendering, hidden-fragment focus/scroll, mobile navigation order and Back to the initial unfragmented workspace state. A matching URL alone does not prove the selected panel became reachable.
 - Run Hermes Doctor against a clean explicit public staging tree. Passing a development checkout containing private virtual environments caused a bounded timeout; clean staging passed. Doctor copies its input directory, so never hand it private evidence or an entire development environment. Keep HOME and HERMES_HOME isolated before Hermes imports.

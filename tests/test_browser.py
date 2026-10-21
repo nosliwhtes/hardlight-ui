@@ -225,6 +225,51 @@ def test_real_bounded_dom_findings_unknown_contrast_and_errors(live_browser, tmp
     assert all(len(entries) <= 100 for entries in (dom["contrast"], dom["missing_accessible_names"], dom["broken_images"]))
 
 
+def test_real_unsupported_text_paint_is_unknown_with_measured_controls(live_browser, tmp_path, subtests):
+    source = tmp_path / "paint.html"
+    source.write_text('''<!doctype html><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Text paint regression</title><style>
+        body{background:white;font:16px sans-serif}
+        p,text{color:black;background:white}
+        #fill{-webkit-text-fill-color:white}
+        #transparent-fill{-webkit-text-fill-color:transparent}
+        #alpha-fill{-webkit-text-fill-color:rgba(0,0,0,.5)}
+        #wide-gamut-fill{-webkit-text-fill-color:color(display-p3 0 0 0)}
+        #stroke{-webkit-text-stroke:2px white}
+        #inherited-paint{-webkit-text-fill-color:white}
+        #low{color:#777;background:#888}
+        #same-fill{-webkit-text-fill-color:rgb(0,0,0)}
+        </style>
+        <p id="control">Black on white</p><p id="low">Low contrast control</p>
+        <p id="same-fill">Matching opaque fill remains measurable</p>
+        <p id="fill">White fill</p><p id="transparent-fill">Transparent fill</p>
+        <p id="alpha-fill">Translucent fill</p><p id="wide-gamut-fill">Unsupported fill</p>
+        <p id="stroke">White stroke</p><div id="inherited-paint"><p id="inherited-fill">Inherited fill</p></div>
+        <svg width="350" height="60"><text id="svgpaint" x="1" y="40" fill="white"
+        style="font-size:28px">White SVG text on white</text></svg>''')
+    result = live_browser.audit_page(str(source), str(tmp_path / "out"))
+    assert result["ok"] is True, result
+    assert [view["name"] for view in result["captures"]] == ["wide", "narrow", "narrow-reduced-motion"]
+    for view in result["captures"]:
+        contrast = {item["id"]: item for item in view["dom"]["contrast"]}
+        for identity in ("control", "same-fill"):
+            with subtests.test(view=view["name"], identity=identity):
+                assert contrast[identity]["status"] == "pass", contrast[identity]
+                assert contrast[identity]["ratio"] == 21
+        with subtests.test(view=view["name"], identity="low"):
+            assert contrast["low"]["status"] == "fail", contrast["low"]
+            assert contrast["low"]["ratio"] < contrast["low"]["threshold"]
+        for identity, reason in (("fill", "text-fill"), ("transparent-fill", "text-fill"),
+                                 ("alpha-fill", "text-fill"), ("wide-gamut-fill", "text-fill"),
+                                 ("inherited-fill", "text-fill"), ("stroke", "text-stroke"),
+                                 ("svgpaint", "non-HTML")):
+            with subtests.test(view=view["name"], identity=identity):
+                assert contrast[identity]["status"] == "unknown", contrast[identity]
+                assert reason in contrast[identity]["reason"]
+                assert "ratio" not in contrast[identity]
+    assert json.loads(Path(result["report"]).read_text()) == result
+
+
 @pytest.fixture
 def local_servers():
     from contextlib import ExitStack

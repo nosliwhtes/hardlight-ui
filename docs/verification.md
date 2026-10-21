@@ -13,7 +13,7 @@ python -m ruff check .
 python -m build
 ```
 
-Observed results: **131 tests passed, 12 viewport subtests passed, no skips**; Ruff passed; wheel and source distribution built. The installed wheel was exercised from an isolated Python environment outside the checkout, with no third-party runtime dependencies. All sixteen style packets and nine craft references resolved, the CLI returned JSON, and missing optional browser dependencies produced an explicit failure instead of an installation.
+Observed results: **132 tests passed, 42 subtests passed, no skips**; Ruff passed; wheel and source distribution built. The installed wheel was exercised from an isolated Python environment outside the checkout, with no third-party runtime dependencies. All sixteen style packets and nine craft references resolved, the CLI returned JSON, and missing optional browser dependencies produced an explicit failure instead of an installation.
 
 The native test is a fresh subprocess with isolated HOME/HERMES_HOME and the actual Hermes PluginManager/registry. It dispatches all five tools, resolves the bundled skill, invokes the command, renders the discovery section and verifies unload. Native compatibility depends on registration APIs, not merely a version label. CI separately pins a public Hermes revision for its manually requested native job.
 
