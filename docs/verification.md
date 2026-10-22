@@ -1,5 +1,19 @@
 # Verification and evidence limits
 
+## Modern-web craft extension — 2026-10-22
+
+The extension's local run used Python 3.12.3, pytest 9.1.1 and installed Chrome with the declared optional Playwright extra. `HARDLIGHT_BROWSER_TESTS=1 python -m pytest tests -q -m 'not native'` passed **161 tests and 91 subtests**, with **one native test explicitly deselected** and no skips. Ruff passed; wheel and source distribution built. An isolated environment installed the built wheel with no dependencies and resolved all sixteen styles, twelve craft references and eleven capability entries, plus a contextual direction packet, from outside the checkout.
+
+The native contract in `tests/test_registration.py` was separately executed in a fresh subprocess using the installed Hermes interpreter (Python 3.14.7) and source whose HEAD was `65edd88bf342012bbe5c64ac098f203c72f5fe3b`. HOME and HERMES_HOME were temporary before host imports, discovery was suppressed, and no model was called. All five tools dispatched, new platform/context and invalid-context paths passed, skill/command/discovery registration resolved, and unload was clean. This was isolated compatibility evidence, not installation or activation in a working profile.
+
+New Set coverage exercises 320/390/768/1440 widths, 200% root text size, an embedded 540px region, CSS-enhancement removal, RTL geometry, forced colors and actual keyboard focus. Existing search/filter/edit/history, literal note rendering, reduced-motion and JavaScript-off checks remain. Modern OKLCH and mixed-color paint fixtures return unknown rather than a fabricated contrast pass. Initial and engaged screenshots were inspected; [wide](assets/workspace-wide.png) and [narrow](assets/workspace-narrow.png) original-example captures are included.
+
+The test harness initially exposed viewport-dependent selection behavior when a workbench was narrow inside a wide page. Set now uses the actual stacked geometry to reach the selected jacket. A focus assertion was corrected to use real Tab navigation, since programmatic focus after pointer input does not necessarily match `:focus-visible`.
+
+Limits: Chromium only locally; no local Firefox/WebKit or translated-content review, full browser-zoom/assistive-technology audit, field performance, user study or model-output comparison. A doubled root font is a text-resizing check, not proof of every zoom mode. The direction worksheet and fixed briefs establish explicit contracts and reproducible future review inputs; they do not prove behavioral superiority of a prompt. The repository's hosted CI remains separate evidence for the PR revision.
+
+## Initial-release evidence
+
 These are observed local checks for the initial 0.1.0 source candidate, not a claim of comparative design effectiveness. Hosted checks for a particular revision are visible in the repository's Actions tab.
 
 ## Local checks

@@ -76,3 +76,15 @@ def test_cli_context_round_trip(tmp_path):
     run = subprocess.run([sys.executable, "-m", "hardlight", "direction", "--input", str(payload)], cwd=ROOT, text=True, capture_output=True, timeout=30)
     assert run.returncode == 0, run.stdout + run.stderr
     assert json.loads(run.stdout)["context"] == CONTEXT
+
+
+@pytest.mark.parametrize("name", ["print-room", "incident-desk", "field-journal"])
+def test_fixed_briefs_preserve_facts_without_claiming_completed_design(name):
+    payload = json.loads((ROOT / "examples/briefs" / f"{name}.json").read_text(encoding="utf-8"))
+    result = make_direction(**payload)
+    assert result["ok"], result
+    assert result["brief"] == payload["brief"]
+    assert result["context"] == payload["context"]
+    assert result["missing_context"] == []
+    assert result["design_contract"]["status"] == "awaiting_host_authorship"
+    assert all(check["status"] == "not_run" for check in result["verification_matrix"])

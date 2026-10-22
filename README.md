@@ -22,6 +22,8 @@ Most frontend guidance stops at a list of aesthetic rules. Hardlight adds inspec
 
 The bundled `hardlight-ui:frontend-design` skill makes these tools part of a complete design workflow. `/hardlight` shows help, styles and version. An optional local Chrome/Playwright runner captures responsive screenshots and computed DOM findings without a hosted service.
 
+Modern-web craft is loaded on demand through the `layout`, `platform` and `performance` reference topics. The [platform ledger](data/platform-features.json) pairs exact capabilities with dated primary sources, detection, constraints and useful fallbacks. It covers container queries, subgrid, modern color, typography and optional native interactions without making experimental effects prerequisites for the task.
+
 The installed runtime uses Python's standard library. No API key, extra model subscription, telemetry, hidden inference or background service is required. Browser development has an explicit optional dependency.
 
 ## Artistic breadth without a house-style trap
@@ -78,6 +80,29 @@ python -m hardlight styles
 
 The CLI shares the plugin's pure functions. Subcommand help documents direction, reference, inspection, contrast, graph input and optional browser arguments. Errors are explicit JSON with nonzero exits. No command automatically publishes a project or installs a browser.
 
+### Supply context; author the design
+
+`hardlight_direction` accepts optional explicit context alongside its existing arguments:
+
+```json
+{
+  "brief": "Improve this print-room workbench while keeping its identity.",
+  "surface": "product",
+  "authority": "extension",
+  "context": {
+    "audience": "Print-room operators on shared tablets",
+    "tasks": ["Find a job", "Leave a useful handoff note"],
+    "identity": "Preserve the job-jacket structure and existing tokens",
+    "browsers": "Current desktop and mobile browsers; functional fallback required",
+    "constraints": ["Offline assets", "Session-only edits"]
+  }
+}
+```
+
+Omit unknown fields. String fields `audience`, `identity` and `browsers` accept up to 2,000 characters each. Lists `tasks`, `content`, `assets` and `constraints` accept 1–12 nonblank strings of up to 1,000 characters each, with a 16,000-character total context limit. Supplied facts are preserved; missing fields remain visible.
+
+The returned `design_contract` is explicitly **awaiting host authorship**: the model must complete a subject-specific thesis, structural decision, visual rules, useful signature, mobile transformation, budget and critique. The verification matrix starts **not run**. Candidate grammars remain deterministic references; neither the context object nor a completed schema proves originality. See the [fixed-brief review protocol](docs/design-evaluation.md).
+
 ### Navigation input
 
 `hardlight_navigation` accepts an explicit page graph and user tasks. For example:
@@ -105,6 +130,8 @@ The offline examples are authored demonstrations, not before/after benchmarks:
 - [Expressive](examples/expressive.html): an art-directed cultural surface with explicit wayfinding.
 
 Open `examples/index.html` in a browser. The pages use original local HTML/CSS/SVG and vanilla JavaScript, without external fonts, frameworks or network assets. Illustrative content is labeled.
+
+[Read the example decisions and fallbacks](examples/README.md). Set demonstrates a container-responsive workbench, shared metadata alignment, text resizing and forced-colors treatment while preserving its existing task paths.
 
 ## Verification and limits
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Add layout, platform and performance references with an eleven-capability ledger of dated sources, detection, constraints and baseline fallbacks.
+- Accept bounded optional context in direction packets and return an explicitly unauthored design contract plus unexecuted verification matrix. Keep existing calls, default style choices and all five native tools compatible.
+- Refine Set into a readable container-responsive workbench with shared metadata alignment, rem-based type, logical properties and forced-colors selection/focus treatment.
+- Extend example regressions for embedded layouts, 320px reflow, enlarged text, RTL geometry, keyboard preferences and unavailable CSS enhancements. Keep OKLCH and mixed-color contrast unknown in the conservative browser checker.
+- Add fixed illustrative briefs and a human review protocol. No model-generation benchmark, artistic-superiority claim, paid inference or live installation is included.
+
 ## 0.1.0
 
 - Add five native Hermes tools for reference lookup, direction planning, bounded source inspection, opaque-sRGB contrast and task-graph navigation.

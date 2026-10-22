@@ -63,4 +63,4 @@ Files: README, research/verification notes, changelog, contribution guidance and
 
 ## Execution record
 
-The follow-up delegation explicitly requests completion, testing, independent review and publication. Proceed inline with this scoped design; no further design approval round is requested. The original inspection report remains outside the repository as prior research, not a product requirement file.
+Implementation proceeds in an isolated branch with independent whole-branch review before publication. Reference/context tests were observed failing before implementation, then passed. The Set topology regression reproduced on the prior layout and passed after the container-based change. Browser tests use real keyboard navigation when checking focus-visible behavior. Full checks and remaining limits are recorded in `docs/verification.md`.

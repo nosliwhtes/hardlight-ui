@@ -239,9 +239,13 @@ def test_real_unsupported_text_paint_is_unknown_with_measured_controls(live_brow
         #inherited-paint{-webkit-text-fill-color:white}
         #low{color:#777;background:#888}
         #same-fill{-webkit-text-fill-color:rgb(0,0,0)}
+        #oklch{color:oklch(20% .01 240)}
+        #mixed{color:color-mix(in oklab, black 90%, white)}
         </style>
         <p id="control">Black on white</p><p id="low">Low contrast control</p>
         <p id="same-fill">Matching opaque fill remains measurable</p>
+        <p id="oklch">Modern color is not a measured sRGB pair</p>
+        <p id="mixed">A color mix is not automatically accessible</p>
         <p id="fill">White fill</p><p id="transparent-fill">Transparent fill</p>
         <p id="alpha-fill">Translucent fill</p><p id="wide-gamut-fill">Unsupported fill</p>
         <p id="stroke">White stroke</p><div id="inherited-paint"><p id="inherited-fill">Inherited fill</p></div>
@@ -261,6 +265,7 @@ def test_real_unsupported_text_paint_is_unknown_with_measured_controls(live_brow
             assert contrast["low"]["ratio"] < contrast["low"]["threshold"]
         for identity, reason in (("fill", "text-fill"), ("transparent-fill", "text-fill"),
                                  ("alpha-fill", "text-fill"), ("wide-gamut-fill", "text-fill"),
+                                 ("oklch", "text-fill"), ("mixed", "text-fill"),
                                  ("inherited-fill", "text-fill"), ("stroke", "text-stroke"),
                                  ("svgpaint", "non-HTML")):
             with subtests.test(view=view["name"], identity=identity):

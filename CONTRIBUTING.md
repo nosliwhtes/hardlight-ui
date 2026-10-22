@@ -41,6 +41,12 @@ A new color combination is not a new grammar. Show what changes about hierarchy,
 
 Run `python -m pytest tests/test_library_data.py -q`. If your change establishes a new behavior class, extend the tests. Treat normative accessibility requirements separately from original artistic recommendations.
 
+## Add a platform recipe
+
+Keep capability facts in `data/platform-features.json`, not in another style registry. Name the exact subfeature, primary source, checked date, design job, detection, constraints, baseline fallback and observable verification. Adoption tiers are recommendations, not browser compatibility promises. Add an enhancement only when a concrete task benefits; test with the enhancement unavailable. Keep the topic allowlist shared between the native schema and reference lookup, and check packaged resources as well as source files.
+
+Brief-context changes must preserve old calls and explicit style IDs, validate bounds, avoid mutating caller data and distinguish unanswered worksheets from authored design. Use the fixed-brief protocol for human assessment; static tests cannot establish prompt effectiveness or artistic superiority.
+
 ## Add an inspection rule or navigation check
 
 Supply a positive fixture, a negative fixture and a case where the answer is unknown. Findings need an actionable explanation and source evidence. Keep scans bounded and read-only; do not execute a project's configuration, follow symlinks, inspect secrets, change files or silently access a network. Never turn heuristic findings into a claim of complete accessibility compliance.
