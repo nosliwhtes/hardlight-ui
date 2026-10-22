@@ -27,6 +27,10 @@ Normal document scrolling should remain normal unless a clearly bounded, accessi
 
 ## Verification
 
+For a view change, the View Transition API can add continuity while the ordinary DOM update remains the baseline. Detect the API and check reduced motion at activation time. Keep focus, history and selection in the real update; a skipped animation is not a failed action. Do not tie persistence or visibility to `transition.ready`. The platform reference includes a minimal guarded pattern. Same-document support does not establish cross-document or newer transition-subfeature support.
+
+Intrinsic-size interpolation and scroll-driven motion have differing support and behavior constraints. Use the feature ledger for a precise detection/fallback decision, then profile and exercise the chosen sequence. A browser recognizing a property does not establish that motion is comfortable, interruptible or useful. [MDN view transitions](https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition), checked 2026-10-22.
+
 Record an ordinary initial state and a reduced-motion initial state at the same viewport. Exercise the triggering interaction in both. Test repeated clicks, interruption, long content, focus movement, slow loading and a narrow device profile. Inspect a recording or real sequence for rhythm; a still screenshot cannot prove timing, lack of flashing or interruptibility. Check console failures and frame behavior with browser performance tools when heavy effects are involved.
 
 **Handoff:** a short motion ledger naming purpose, trigger, approximate duration, fallback and observed proof. If motion cannot be exercised, say it remains unverified rather than calling a static final frame an animation review.

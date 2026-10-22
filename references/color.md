@@ -22,6 +22,19 @@ Transparency, backdrop blur, gradients, photographs, blend modes and canvas/WebG
 
 ## Practical pass
 
+Modern authoring can use OKLCH for perceptual relationships and `color-mix()` for controlled variations. Keep explicit semantic roles and useful sRGB fallbacks. Wrap custom-property overrides in a feature query: custom properties accept raw values even when the eventual color syntax is unsupported.
+
+```css
+:root { --canvas: #f4f6f8; --ink: #172b3e; }
+@supports (color: oklch(97% 0.005 240)) {
+  :root { --canvas: oklch(97% 0.005 240); }
+}
+```
+
+These are illustrative values, not certified equivalent or accessible pairs. Check each actual supported light/dark role and its hover, focus and selected state; do not invert tokens to manufacture a dark theme. Perceptual lightness, `color-mix()` and automatic contrast color selection do not establish WCAG compliance. The current pure contrast tool accepts opaque hexadecimal sRGB, and the browser helper conservatively recognizes simple sRGB text paint only. OKLCH or unresolved mixes must remain unknown unless a separately validated conversion and actual paint analysis are available.
+
+Sources checked 2026-10-22: [MDN OKLCH](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/oklch), [color-mix](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/color-mix).
+
 1. Inventory rendered text/action/status roles, including disabled and selected states.
 2. Check known opaque pairs through the deterministic tool; retain the exact role and threshold with each result.
 3. Inspect image/effect backgrounds, focus indicators, charts and overlays in the browser. Mark uninspected backgrounds explicitly.

@@ -13,7 +13,7 @@ CANONICAL = {
     "deco-geometric", "retro-future", "systemic-product", "data-atelier",
     "wayfinding", "illustrated-world", "spatial-technical", "expressive-material",
 }
-TOPICS = {"workflow", "navigation", "states", "typography", "color", "motion", "review", "systems", "browser"}
+TOPICS = {"workflow", "navigation", "states", "typography", "color", "motion", "review", "systems", "browser", "layout", "platform", "performance"}
 STYLE_FIELDS = {
     "id", "name", "family", "surfaces", "thesis", "composition", "typography",
     "palette", "material", "motion", "interaction", "mobile", "use_when",

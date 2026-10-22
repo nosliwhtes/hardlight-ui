@@ -28,4 +28,10 @@ At narrow width, adjust column structure and line length before shrinking text. 
 
 ## Verification record
 
+Use a rem-inclusive fluid scale as a starting point, for example `font-size: clamp(2rem, 1.4rem + 2vw, 3.5rem)`. The rem portion respects the root text setting; it does not by itself prove usable 200% text resizing or 400% page zoom. Test both. Prefer `text-wrap: balance` for selected short headings; evaluate `pretty` for prose rather than applying its more expensive wrapping algorithm to an entire app. Normal wrapping is the fallback.
+
+Use `font-optical-sizing: auto` only with a font that supplies an optical-size axis; it does not create one. Verify real weights and scripts before choosing variable axes. Newer `text-box-trim` may align a display specimen with an image, but keep normal line-box spacing as the fallback and inspect accents, descenders and alternate scripts. Load the performance reference for WOFF2, font-display and measured fallback-metric choices.
+
+Sources checked 2026-10-22: [MDN text wrapping](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-wrap-style), [optical sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-optical-sizing), [text-box trimming](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-box-trim). Check the exact feature in the target browser; typography remains a rendered decision.
+
 Capture a wide heading/prose specimen and a narrow difficult-content specimen. Confirm the font actually loaded; inspect fallback, long labels, zoom and selected/error/disabled text. Check text/background contrast for every role and state using `hardlight_contrast` for supported opaque colors. Document the final role table in the shipped system, including exceptions and their reasons. Clean font tokens do not prove the page reads well: inspect hierarchy and rhythm in the actual composition.

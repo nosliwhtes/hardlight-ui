@@ -51,7 +51,7 @@ def main(argv=None):
         elif args.command == "direction":
             payload = _json_file(args.input)
             if not isinstance(payload, dict):
-                raise ValueError("direction input must be a JSON object with brief and optional surface, authority, styles")
+                raise ValueError("direction input must be a JSON object with brief and optional surface, authority, styles, context")
             result = make_direction(**payload)
         elif args.command == "inspect":
             result = inspect_project(args.root, args.max_files)

@@ -56,6 +56,12 @@ def test_native_adapter_shape_and_commands(tmp_path):
         assert json.loads(handler([], task_id="x"))["ok"] is False
     contrast = ctx.tools["hardlight_contrast"][1]
     assert json.loads(contrast({"pairs": [{"foreground": "#000", "background": "#fff", "role": "text"}]}))["pairs"][0]["ratio"] == 21
+    schema, direction = ctx.tools["hardlight_direction"]
+    assert schema["parameters"]["properties"]["context"]["additionalProperties"] is False
+    result = json.loads(direction({"brief": "Print room", "context": {"tasks": ["Review a proof"]}}, task_id="test", session_id="test"))
+    assert result["context"]["tasks"] == ["Review a proof"]
+    assert result["design_contract"]["status"] == "awaiting_host_authorship"
+    assert json.loads(direction({"brief": "Print room", "context": {"tasks": []}}))["ok"] is False
     # Optional prompt API can be absent; required APIs fail before any registration.
     ctx = Context()
     ctx.register_system_prompt_section = None
@@ -104,6 +110,14 @@ with suppress_plugin_discovery():
             results.append({"tool": name, "ok": True})
         invalid = json.loads(registry.dispatch("hardlight_contrast", {"pairs": []}, scope=manager.scope_key, task_id="contract-test", session_id="contract-session"))
         assert invalid["ok"] is False
+        platform = json.loads(registry.dispatch("hardlight_reference", {"topic": "platform"}, scope=manager.scope_key, task_id="contract-test"))
+        assert platform["ok"] and platform["features"] and platform["schema_version"] == 1
+        contextual = json.loads(registry.dispatch("hardlight_direction", {"brief": "Print room", "authority": "extension", "context": {"tasks": ["Review a proof"], "identity": "Keep the incumbent workbench"}}, scope=manager.scope_key, task_id="contract-test", session_id="contract-session"))
+        assert contextual["ok"] and contextual["preserve_incumbent"]
+        assert contextual["context"]["tasks"] == ["Review a proof"]
+        assert contextual["design_contract"]["status"] == "awaiting_host_authorship"
+        invalid_context = json.loads(registry.dispatch("hardlight_direction", {"brief": "Print room", "context": {"tasks": []}}, scope=manager.scope_key))
+        assert invalid_context["ok"] is False
         assert manager.find_plugin_skill("hardlight-ui:frontend-design").is_file()
         command = manager._plugin_commands["hardlight"]["handler"]
         assert "0.1.0" in command("version")
