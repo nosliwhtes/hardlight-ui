@@ -1,5 +1,29 @@
 # Verification and evidence limits
 
+## v0.2.0 release candidate — 2026-10-23
+
+Fresh release validation passed **163 tests and 91 subtests**, with one native test explicitly deselected and no skips, on Python 3.12.3 and installed Chrome 155. Ruff and whitespace checks passed. Wheel and source distribution builds passed; the source distribution now includes the changelog. Package, plugin, command and bundled-skill versions are aligned at 0.2.0, with `requires_hermes: ">=0.21.0"` matching the existing catalog floor.
+
+The native dispatch contract also passed in a fresh Python 3.14.7 process against upstream Hermes `290080e19e8e143d35f67427e89aed662161faf8`: five tools, reference/context paths, invalid inputs, skill/command/prompt registration and clean unload. HOME, HERMES_HOME and runtime paths were temporary before imports; no model or live profile was used.
+
+Current upstream catalog admission validation with dependency preparation (`hermes plugins validate --install-deps`, invoked through its command handler) passed **15 checks with no warnings**, including a safe install-security scan, matching registered capabilities and no core overrides. This used a clean copy of tracked plugin files and an isolated HOME/runtime. The first preparation attempt exposed unsupported Android Playwright resolution through the optional browser extra; platform markers now restrict that extra to Linux/macOS/Windows. The repeated dependency preparation completed successfully. No required runtime dependency was added.
+
+These results support packaging and native compatibility, not a full accessibility audit, model-output benchmark or field-performance claim. The earlier implementation plans describe their original source-PR scope; the separately authorized release and catalog update follow the [official update process](https://hermes-agent.nousresearch.com/docs/developer-guide/plugins/catalog-submission#updating-your-entry).
+
+## Modern-web craft extension — 2026-10-22
+
+The extension's local run used Python 3.12.3, pytest 9.1.1 and installed Chrome with the declared optional Playwright extra. `HARDLIGHT_BROWSER_TESTS=1 python -m pytest tests -q -m 'not native'` passed **161 tests and 91 subtests**, with **one native test explicitly deselected** and no skips. Ruff passed; wheel and source distribution built. An isolated environment installed the built wheel with no dependencies and resolved all sixteen styles, twelve craft references and eleven capability entries, plus a contextual direction packet, from outside the checkout.
+
+The native contract in `tests/test_registration.py` was separately executed in a fresh subprocess using the installed Hermes interpreter (Python 3.14.7) and source whose HEAD was `65edd88bf342012bbe5c64ac098f203c72f5fe3b`. HOME and HERMES_HOME were temporary before host imports, discovery was suppressed, and no model was called. All five tools dispatched, new platform/context and invalid-context paths passed, skill/command/discovery registration resolved, and unload was clean. This was isolated compatibility evidence, not installation or activation in a working profile.
+
+New Set coverage exercises 320/390/768/1440 widths, 200% root text size, an embedded 540px region, CSS-enhancement removal, RTL geometry, forced colors and actual keyboard focus. Existing search/filter/edit/history, literal note rendering, reduced-motion and JavaScript-off checks remain. Modern OKLCH and mixed-color paint fixtures return unknown rather than a fabricated contrast pass. Initial and engaged screenshots were inspected; [wide](assets/workspace-wide.png) and [narrow](assets/workspace-narrow.png) original-example captures are included.
+
+The test harness initially exposed viewport-dependent selection behavior when a workbench was narrow inside a wide page. Set now uses the actual stacked geometry to reach the selected jacket. A focus assertion was corrected to use real Tab navigation, since programmatic focus after pointer input does not necessarily match `:focus-visible`.
+
+Limits: Chromium only locally; no local Firefox/WebKit or translated-content review, full browser-zoom/assistive-technology audit, field performance, user study or model-output comparison. A doubled root font is a text-resizing check, not proof of every zoom mode. The direction worksheet and fixed briefs establish explicit contracts and reproducible future review inputs; they do not prove behavioral superiority of a prompt. The repository's hosted CI remains separate evidence for the PR revision.
+
+## Initial-release evidence
+
 These are observed local checks for the initial 0.1.0 source candidate, not a claim of comparative design effectiveness. Hosted checks for a particular revision are visible in the repository's Actions tab.
 
 ## Local checks

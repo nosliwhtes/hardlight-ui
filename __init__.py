@@ -8,13 +8,15 @@ if __package__:
     from .hardlight.contrast import check_contrast
     from .hardlight.direction import make_direction
     from .hardlight.inspection import inspect_project
-    from .hardlight.library import get_reference
+    from .hardlight.library import REFERENCE_TOPICS, get_reference
+    from .hardlight.brief import CONTEXT_SCHEMA
 else:  # Direct source tooling (e.g. pytest's root __init__ collection).
     from hardlight import __version__
     from hardlight.contrast import check_contrast
     from hardlight.direction import make_direction
     from hardlight.inspection import inspect_project
-    from hardlight.library import get_reference
+    from hardlight.library import REFERENCE_TOPICS, get_reference
+    from hardlight.brief import CONTEXT_SCHEMA
 
 
 def _navigation(**args):
@@ -42,13 +44,14 @@ def _schema(name, description, properties, required=()):
 
 _TOOLS = (
     ("hardlight_reference", get_reference, "Read original local design grammars or allowlisted workflow references.", {
-        "topic": {"type": "string", "enum": ["index", "atlas", "style", "workflow", "navigation", "states", "typography", "color", "motion", "review", "systems", "browser"], "default": "index"},
+        "topic": {"type": "string", "enum": list(REFERENCE_TOPICS), "default": "index"},
         "style": {"type": "string", "description": "Exact atlas ID; required for topic style."}}, ()),
     ("hardlight_direction", make_direction, "Build deterministic reference-derived direction alternatives; preserve incumbent identity in refinement or extension.", {
         "brief": {"type": "string", "minLength": 1},
         "surface": {"type": "string", "enum": ["marketing", "product", "reading", "commerce", "portfolio"], "default": "product"},
         "authority": {"type": "string", "enum": ["refinement", "extension", "redesign", "greenfield"], "default": "greenfield"},
-        "styles": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 3, "uniqueItems": True}}, ("brief",)),
+        "styles": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 3, "uniqueItems": True},
+        "context": CONTEXT_SCHEMA}, ("brief",)),
     ("hardlight_inspect", inspect_project, "Read-only bounded frontend inspection with token provenance and advisory findings. Never execute project code.", {
         "root": {"type": "string", "description": "Existing local directory; no symlink components."},
         "max_files": {"type": "integer", "minimum": 1, "maximum": 500, "default": 120}}, ("root",)),

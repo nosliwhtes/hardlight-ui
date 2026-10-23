@@ -315,6 +315,72 @@ class ChromeExamplesTests(unittest.TestCase):
         self.assertEqual(self.page.locator('#job-atlas .saved-note').inner_text(), 'x' * 600)
         self.assert_no_overflow()
 
+    def test_workspace_container_topology_and_platform_fallback(self):
+        self.page.set_viewport_size({'width': 1440, 'height': 1000})
+        self.open('workspace.html')
+        queue = self.page.locator('.queue').bounding_box()
+        inspector = self.page.locator('.inspector').bounding_box()
+        self.assertGreater(inspector['x'], queue['x'] + queue['width'] - 2)
+        self.page.locator('.main').evaluate("e => e.style.inlineSize = '540px'")
+        queue = self.page.locator('.queue').bounding_box()
+        inspector = self.page.locator('.inspector').bounding_box()
+        self.assertGreaterEqual(inspector['y'], queue['y'] + queue['height'] - 2,
+                                'A narrow embedded workbench must stack inside a wide viewport')
+        self.page.locator('a[href="#job-imprint"]').click()
+        self.page.locator('#job-imprint').wait_for(state='visible')
+        self.assertTrue(self.page.locator('#job-imprint').is_visible())
+        self.assertLess(self.page.locator('#job-imprint').bounding_box()['y'], 100,
+                        'Selection must reach the jacket whenever container topology stacks')
+        # Remove enhancement rules: test the real stylesheet's baseline, not an invented copy.
+        self.open('workspace.html')
+        self.page.evaluate('''() => {
+            for (const sheet of document.styleSheets) {
+                for (let i = sheet.cssRules.length - 1; i >= 0; i--) {
+                    const rule = sheet.cssRules[i];
+                    if (rule.cssText.startsWith('@container') || rule.cssText.startsWith('@supports')) {
+                        sheet.deleteRule(i);
+                    }
+                }
+            }
+        }''')
+        queue = self.page.locator('.queue').bounding_box()
+        inspector = self.page.locator('.inspector').bounding_box()
+        self.assertGreaterEqual(inspector['y'], queue['y'] + queue['height'] - 2)
+        self.page.get_by_role('link', name='J—015 / Identity A useful imprint', exact=False).click()
+        self.page.locator('#job-imprint').wait_for(state='visible')
+        self.assertTrue(self.page.locator('#job-imprint').is_visible())
+        self.assert_no_overflow()
+
+    def test_workspace_reflow_text_preferences_and_rtl(self):
+        for width in (320, 390, 768, 1440):
+            with self.subTest(width=width):
+                self.page.set_viewport_size({'width': width, 'height': 1000})
+                self.open('workspace.html')
+                self.assert_no_overflow()
+                original_size = self.page.locator('body').evaluate('(e) => parseFloat(getComputedStyle(e).fontSize)')
+                self.page.locator('html').evaluate("e => e.style.fontSize = '200%'")
+                self.assertGreaterEqual(self.page.locator('body').evaluate('(e) => parseFloat(getComputedStyle(e).fontSize)'), original_size * 1.95)
+                self.assert_no_overflow()
+                self.page.get_by_role('link', name='J—015 / Identity A useful imprint', exact=False).click()
+                self.page.locator('#job-imprint').wait_for(state='visible')
+                self.assertTrue(self.page.locator('#job-imprint').is_visible())
+                self.page.locator('html').evaluate("e => e.dir = 'rtl'")
+                self.assert_no_overflow()
+                self.capture(f'workspace-large-text-rtl-{width}')
+        self.page.set_viewport_size({'width': 390, 'height': 844})
+        self.open('workspace.html')
+        self.page.emulate_media(forced_colors='active', reduced_motion='reduce')
+        self.page.locator('a[href="#job-imprint"]').click()
+        self.page.locator('#job-imprint').wait_for(state='visible')
+        link = self.page.locator('a[href="#job-imprint"]')
+        self.assertNotEqual(link.evaluate('(e) => getComputedStyle(e).borderInlineStartStyle'), 'none')
+        self.page.locator('#imprint-note').focus()
+        self.page.keyboard.press('Tab')
+        self.assertEqual(self.page.evaluate('document.activeElement.textContent'), 'Apply to this session')
+        self.assertEqual(self.page.evaluate('getComputedStyle(document.activeElement).outlineStyle'), 'solid')
+        self.capture('workspace-forced-colors')
+        self.page.emulate_media(forced_colors='none', reduced_motion='no-preference')
+
     def test_workspace_mobile_link_reaches_selected_jacket(self):
         self.page.set_viewport_size({'width':390,'height':844})
         self.open('workspace.html')

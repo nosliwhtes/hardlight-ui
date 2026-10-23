@@ -22,7 +22,9 @@ Most frontend guidance stops at a list of aesthetic rules. Hardlight adds inspec
 
 The bundled `hardlight-ui:frontend-design` skill makes these tools part of a complete design workflow. `/hardlight` shows help, styles and version. An optional local Chrome/Playwright runner captures responsive screenshots and computed DOM findings without a hosted service.
 
-The installed runtime uses Python's standard library. No API key, extra model subscription, telemetry, hidden inference or background service is required. Browser development has an explicit optional dependency.
+Modern-web craft is loaded on demand through the `layout`, `platform` and `performance` reference topics. The [platform ledger](data/platform-features.json) pairs exact capabilities with dated primary sources, detection, constraints and useful fallbacks. It covers container queries, subgrid, modern color, typography and optional native interactions without making experimental effects prerequisites for the task.
+
+The installed runtime uses Python's standard library. No API key, extra model subscription, telemetry, hidden inference or background service is required. Browser development has an explicit optional dependency for Linux, macOS and Windows; mobile Python environments do not install Playwright.
 
 ## Artistic breadth without a house-style trap
 
@@ -46,9 +48,9 @@ Hardlight does not assign a numerical beauty or “AI-slop” score. Tools can e
 
 ## Install into Hermes
 
-Requires a Hermes build supporting native tool, command and bundled-skill registration. The plugin checks required registration methods and reports an actionable compatibility error rather than patching Hermes internals. The optional stable discovery pointer uses the documented new-session prompt-section API when present.
+Requires **Hermes >=0.21.0** with native tool, command and bundled-skill registration. The plugin checks required registration methods and reports an actionable compatibility error rather than patching Hermes internals. The optional stable discovery pointer uses the documented new-session prompt-section API when present.
 
-Review the source before enabling any native plugin. Repository shorthand is a direct source install, not a claim of admission to the official Hermes catalog.
+Review the source before enabling any native plugin. The [official catalog](https://hermes-agent.nousresearch.com/docs/plugins/hardlight-ui) installs its reviewed commit; a source release can be newer while its catalog update awaits maintainer review. Repository shorthand below installs directly from the source repository.
 
 ```sh
 hermes plugins install nosliwhtes/hardlight-ui --no-enable
@@ -78,6 +80,29 @@ python -m hardlight styles
 
 The CLI shares the plugin's pure functions. Subcommand help documents direction, reference, inspection, contrast, graph input and optional browser arguments. Errors are explicit JSON with nonzero exits. No command automatically publishes a project or installs a browser.
 
+### Supply context; author the design
+
+`hardlight_direction` accepts optional explicit context alongside its existing arguments:
+
+```json
+{
+  "brief": "Improve this print-room workbench while keeping its identity.",
+  "surface": "product",
+  "authority": "extension",
+  "context": {
+    "audience": "Print-room operators on shared tablets",
+    "tasks": ["Find a job", "Leave a useful handoff note"],
+    "identity": "Preserve the job-jacket structure and existing tokens",
+    "browsers": "Current desktop and mobile browsers; functional fallback required",
+    "constraints": ["Offline assets", "Session-only edits"]
+  }
+}
+```
+
+Omit unknown fields. String fields `audience`, `identity` and `browsers` accept up to 2,000 characters each. Lists `tasks`, `content`, `assets` and `constraints` accept 1–12 nonblank strings of up to 1,000 characters each, with a 16,000-character total context limit. Supplied facts are preserved; missing fields remain visible.
+
+The returned `design_contract` is explicitly **awaiting host authorship**: the model must complete a subject-specific thesis, structural decision, visual rules, useful signature, mobile transformation, budget and critique. The verification matrix starts **not run**. Candidate grammars remain deterministic references; neither the context object nor a completed schema proves originality. See the [fixed-brief review protocol](docs/design-evaluation.md).
+
 ### Navigation input
 
 `hardlight_navigation` accepts an explicit page graph and user tasks. For example:
@@ -106,6 +131,14 @@ The offline examples are authored demonstrations, not before/after benchmarks:
 
 Open `examples/index.html` in a browser. The pages use original local HTML/CSS/SVG and vanilla JavaScript, without external fonts, frameworks or network assets. Illustrative content is labeled.
 
+[Read the example decisions and fallbacks](examples/README.md). Set demonstrates a container-responsive workbench, shared metadata alignment, text resizing and forced-colors treatment while preserving its existing task paths.
+
+## Data access and execution disclosure
+
+The `hardlight_inspect` tool reads frontend source files under the local directory supplied by the model, including directories outside the plugin. It scans at most 500 files and 8 MiB, skips hidden, symlinked, vendor/build and secret-named paths, and returns tokens and findings to the calling model. Choose the project scope accordingly.
+
+The five native tools make no network calls, run no subprocesses and write no files. The plugin registers a short, stable system-prompt section naming its tools when the host supports that API. It does not access credential stores, run background services or self-update. The optional `hardlight browser` shell command launches a separately installed Chromium against local file or loopback pages, blocks external requests, and writes reports and screenshots to the explicitly chosen output directory.
+
 ## Verification and limits
 
 Bounded source inspection requires POSIX no-follow, directory-relative file APIs. On unsupported platforms, including Windows, `hardlight_inspect` returns an explicit compatibility error rather than scanning unsafely; the reference, direction, contrast and navigation tools remain available.
@@ -114,7 +147,7 @@ Static source inspection is heuristic, especially for JSX/TSX and framework-gene
 
 The optional browser runner accepts explicit local HTML or literal-loopback HTTP targets and blocks external network access. Reports and screenshots stay in the chosen output directory. Treat them as potentially private project evidence. Automated DOM checks do not establish full WCAG conformance, screen-reader usability, field performance or artistic quality. Review keyboard behavior, important states and real task completion separately.
 
-The initial release establishes working capabilities, not an empirical claim that one plugin or model always produces better art than another. [Observed checks and limits](docs/verification.md) describe the local evidence; [the release contract](docs/plans/initial-release/design.md) makes the requirements and exclusions inspectable.
+These releases establish working capabilities, not an empirical claim that one plugin or model always produces better art than another. [Observed checks and limits](docs/verification.md) describe the local evidence; [the release contract](docs/plans/initial-release/design.md) makes the requirements and exclusions inspectable.
 
 ## Community
 

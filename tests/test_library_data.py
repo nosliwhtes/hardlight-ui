@@ -1,10 +1,14 @@
 """Shipped content contracts, not automated judgments of artistic merit."""
+import ast
 import json
 from pathlib import Path
 import re
 from urllib.parse import urlparse
 
 import pytest
+from packaging.requirements import Requirement
+
+from hardlight import __version__
 
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL = {
@@ -13,7 +17,7 @@ CANONICAL = {
     "deco-geometric", "retro-future", "systemic-product", "data-atelier",
     "wayfinding", "illustrated-world", "spatial-technical", "expressive-material",
 }
-TOPICS = {"workflow", "navigation", "states", "typography", "color", "motion", "review", "systems", "browser"}
+TOPICS = {"workflow", "navigation", "states", "typography", "color", "motion", "review", "systems", "browser", "layout", "platform", "performance"}
 STYLE_FIELDS = {
     "id", "name", "family", "surfaces", "thesis", "composition", "typography",
     "palette", "material", "motion", "interaction", "mobile", "use_when",
@@ -25,6 +29,26 @@ def atlas():
     path = ROOT / "data/atlas.json"
     assert path.is_file(), "The shipped artistic atlas is missing"
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def test_release_metadata_agrees_across_distribution_surfaces():
+    manifest = (ROOT / "plugin.yaml").read_text(encoding="utf-8")
+    project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    skill = (ROOT / "skills/frontend-design/SKILL.md").read_text(encoding="utf-8")
+    assert re.findall(r'^version: ([0-9.]+)$', manifest, re.M) == [__version__]
+    assert re.findall(r'^version = "([0-9.]+)"$', project, re.M) == [__version__]
+    assert re.findall(r'^version: ([0-9.]+)$', skill, re.M) == [__version__]
+    assert 'requires_hermes: ">=0.21.0"' in manifest
+
+
+def test_optional_browser_dependency_resolves_only_on_supported_platforms():
+    project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    requirements = ast.literal_eval(re.search(r'^browser = (.+)$', project, re.M)[1])
+    playwright, = [Requirement(item) for item in requirements]
+    assert playwright.name == "playwright"
+    assert playwright.marker is not None
+    for platform in ("linux", "darwin", "win32", "android", "ios", "emscripten"):
+        assert playwright.marker.evaluate({"sys_platform": platform}) is (platform in {"linux", "darwin", "win32"})
 
 
 def test_canonical_atlas_has_exact_schema_and_resolving_sources():

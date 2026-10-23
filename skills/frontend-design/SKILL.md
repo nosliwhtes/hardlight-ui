@@ -1,7 +1,7 @@
 ---
 name: frontend-design
 description: Use when designing or reviewing frontend interfaces.
-version: 0.1.0
+version: 0.2.0
 author: Seth Wilson and Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -41,6 +41,8 @@ Load `hardlight_reference(topic="workflow")` when planning a substantial build. 
 
 **Exit:** task sentence, authority decision, scope and factual/asset gaps.
 
+For a substantial task, pass known facts to `hardlight_direction` through its optional `context`: `audience`, `tasks`, `content`, `assets`, `identity`, `browsers` and `constraints`. Omit unknown fields rather than filling them with plausible guesses. Its `design_contract` is an unanswered worksheet and its `verification_matrix` starts untested. Complete them with actual design decisions and observed evidence; the tool does not generate an original concept or assess its quality.
+
 ### 2. Resolve navigation before surface polish
 
 Load `hardlight_reference(topic="navigation")`. List destinations with labels, URLs, parent/scope, entry and return paths. Separate global navigation, local views and object actions. Define current location, search/filter state, direct links, Back/Forward, mobile topology, permission failure and completion routes. Prefer ordinary links and disclosure buttons for site navigation, not an ARIA application menu by reflex.
@@ -65,6 +67,8 @@ Reject a premise that survives an unrelated product-name swap unchanged. Cards, 
 
 **Exit:** one explicit compositional brief with an honest risk and asset requirements.
 
+Write the invariants that connect the whole interface: hierarchy, alignment, type roles, semantic color, spacing and state language. Name the proof artifact that makes the subject visible. Try substituting an unrelated product name; if the structure and assets still fit unchanged, revise the premise. For refinement, use this critique to strengthen the incumbent system rather than forcing a new visual identity.
+
 ### 5. Implement the task and its full states
 
 Build actual routes and actions in the project's stack. A visible control must keep its promise; remove hollow controls rather than making a fake success toast. Clearly label illustrative records and never invent proof, client logos or benchmark results.
@@ -72,9 +76,14 @@ Build actual routes and actions in the project's stack. A visible control must k
 Load `hardlight_reference(topic="states")` for initial, pending, empty, filtered-empty, error, success, disabled, permission, offline and stale-content behavior. Preserve input, focus and recoverability. Add only applicable states, but explain omissions.
 
 Load craft guidance as needed:
+- `hardlight_reference(topic="layout")`: intrinsic sizing, container-responsive composition, logical properties and reflow.
+- `hardlight_reference(topic="platform")`: dated capability ledger, precise feature detection and useful baseline fallbacks.
 - `hardlight_reference(topic="typography")`: hierarchy, real-copy specimens, readable measure, fallback and zoom.
 - `hardlight_reference(topic="color")`: semantic roles, states, painted backgrounds and contrast limits.
 - `hardlight_reference(topic="motion")`: a reason for movement, interruption and an authored reduced-motion equivalent.
+- `hardlight_reference(topic="performance")`: image/font delivery, interaction and effect budgets, lab versus field evidence.
+
+Choose a coherent subset of platform capabilities to serve the design. Modern syntax is not a quality target by itself. Record support and performance budgets, then test the task with enhancements unavailable. A container can be narrow inside a wide page; a display font can fail to load; a still composition must remain complete when motion is reduced.
 
 Use `hardlight_contrast` with explicit supported opaque foreground/background pairs and the correct text/large_text/ui role. Effects and unknown composites do not pass by approximation.
 
