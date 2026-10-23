@@ -9,6 +9,8 @@ import textwrap
 
 import pytest
 
+from hardlight import __version__
+
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = {"hardlight_reference", "hardlight_direction", "hardlight_inspect", "hardlight_contrast", "hardlight_navigation"}
 
@@ -45,7 +47,7 @@ def test_native_adapter_shape_and_commands(tmp_path):
     plugin.register(ctx)
     assert set(ctx.tools) == TOOLS
     assert ctx.skills["frontend-design"].is_file()
-    assert "0.1.0" in ctx.commands["hardlight"]("version")
+    assert __version__ in ctx.commands["hardlight"]("version")
     assert "styles" in ctx.commands["hardlight"]("help")
     assert "swiss-editorial" in ctx.commands["hardlight"]("styles")
     assert "help" in ctx.commands["hardlight"]("not-a-command")
@@ -120,7 +122,7 @@ with suppress_plugin_discovery():
         assert invalid_context["ok"] is False
         assert manager.find_plugin_skill("hardlight-ui:frontend-design").is_file()
         command = manager._plugin_commands["hardlight"]["handler"]
-        assert "0.1.0" in command("version")
+        assert manifest.version in command("version")
         assert "swiss-editorial" in command("styles")
         sections = manager.render_system_prompt_sections({"session_id": "contract-session", "model": "test", "provider": "test", "platform": "cli", "profile_name": "isolated", "cwd": str(root)})
         assert len(sections) == 1

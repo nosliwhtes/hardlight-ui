@@ -1,7 +1,7 @@
 ---
 name: frontend-design
 description: Use when designing or reviewing frontend interfaces.
-version: 0.1.0
+version: 0.2.0
 author: Seth Wilson and Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
